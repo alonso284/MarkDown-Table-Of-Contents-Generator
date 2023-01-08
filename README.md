@@ -1,6 +1,6 @@
 # Table of Contents
-1. [MarkDown-Table-Of-Contents-Generator](markdown-table-of-contents-generator).5
-    1. [TODO](todo).............................................................9
+1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator-1)
+    1. [TODO](#todo-1)
 
 # MarkDown-Table-Of-Contents-Generator
 
@@ -10,3 +10,4 @@ This application is made to automate the creation of table of contents for markd
 - Allow user to add a brief description to a header in the table of contents
 - Write manual
 - Alllow overwrite
+- Repair Line location 

@@ -5,6 +5,7 @@
 #include <map>
 #include <algorithm>
 #include <cmath>
+#include <set>
 
 #define DEBUG
 
@@ -33,14 +34,14 @@ std::map< std::string, std::string > commands;
 std::vector< std::string > generated_titles;
 // Input file ifstream
 std::ifstream input_markdown_file;
-// Max size of title string
-int size_of_string = 80;
 // Tab size
 int tab_size = 4;
 // Tab
 std::string tab;
 // prefix
 std::string prefix;
+// set of alreaedy created titles
+std::map< std::string, int > title_count;
 
 void print_titles(){
 	for(auto& title:titles)
@@ -76,19 +77,7 @@ int main(int argc, char* argv []){
 		if(!std::strcmp(argv[cmd], "-i")) commands.insert({"-i",""});
 		else
 		if(!std::strcmp(argv[cmd], "-line")){
-			cmd++;
-			if(cmd >= argc){
-				std::cout << "No argument passed for -line" << std::endl;
-				exit(EXIT_FAILURE);
-			}
-			int indx = 0;
-			while(argv[cmd][indx])
-				if(!isdigit(argv[cmd][indx++])){
-					std::cout << "argument passed for -line is not a number" << std::endl;
-					exit(EXIT_FAILURE);
-				}
-			size_of_string = std::stoi(argv[cmd]);
-			commands.insert({"-line",""});
+		commands.insert({"-line",""});
 		}
 		else
 		if(!std::strcmp(argv[cmd], "-t")){
@@ -147,6 +136,7 @@ int main(int argc, char* argv []){
 			int hash_count = 0;
 			while(hash_count < line.size() && line[hash_count] == '#') hash_count++;
 			titles.push_back(title(line.substr(hash_count+1), hash_count, input_markdown_lines.size())); 
+			title_count[titles.back().name]++;
 		}
 	}
 	input_markdown_file.close();
@@ -205,13 +195,13 @@ void create_titles(bool include_hyperlink, bool include_in_file, bool include_li
 	for(auto& title:titles)
 		generated_titles.push_back(repeat_chars('\t', title.tab_size-1) + std::to_string(next_number(title.tab_size)) + '.' + ' ' + 
 				(include_hyperlink?
-				 '[' + title.name + ']' + '(' + prefix + hyperlink(title.name) + ')':
+				 '[' + title.name + ']' + '(' + prefix + hyperlink(title.name) + '-' + std::to_string(title_count[title.name]--) +  ')':
 				 title.name
 				));
 
 	if(include_line_number)
 		for(int indx = 0; indx < generated_titles.size(); indx++)
-			generated_titles[indx] += repeat_chars('.', size_of_string-generated_titles[indx].size()-std::floor(std::log10(titles[indx].location+(include_in_file?titles.size()+2:0)))) + std::to_string(titles[indx].location+(include_in_file?titles.size()+2:0));;
+			generated_titles[indx] += " at line "  + std::to_string(titles[indx].location+(include_in_file?titles.size()+2:0));;
 }
 
 std::string hyperlink(std::string str){
