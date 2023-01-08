@@ -143,8 +143,6 @@ int main(int argc, char* argv []){
 			int hash_count = 0;
 			while(hash_count < line.size() && line[hash_count] == '#') hash_count++;
 			titles.push_back(title(line.substr(hash_count+1), hash_count, input_markdown_lines.size())); 
-			if(!title_count.count(titles.back().name)) title_count.insert({titles.back().name, 0});
-			else title_count[titles.back().name] = 1;
 		}
 	}
 	input_markdown_file.close();
@@ -206,7 +204,7 @@ void create_titles(bool include_hyperlink, bool include_in_file, bool include_li
 	for(auto& title:titles)
 		generated_titles.push_back(repeat_chars('\t', title.tab_size-1) + std::to_string(next_number(title.tab_size)) + '.' + ' ' + 
 				(include_hyperlink?
-				 '[' + title.name + ']' + '(' + prefix + hyperlink(title.name) + (title_count[title.name]? '-' + std::to_string(title_count[title.name]++):"") +  ')':
+				 '[' + title.name + ']' + '(' + prefix + hyperlink(title.name) + (title_count[title.name]++? '-' + std::to_string(title_count[title.name]-1):"") +  ')':
 				 title.name
 				));
 
