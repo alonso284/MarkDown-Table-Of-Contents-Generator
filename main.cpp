@@ -39,13 +39,13 @@ int tab_size = 4;
 // Tab
 std::string tab;
 // prefix
-std::string prefix;
+std::string prefix("#");
 // set of alreaedy created titles
 std::map< std::string, int > title_count;
 
 void print_titles(){
 	for(auto& title:titles)
-		std::cout << title.name << ' ' << title.tab_size << title.location << std::endl;
+		std::cout << "index level " << title.tab_size << ' ' << title.name << " at line " << title.location << std::endl;
 }
 
 std::string repeat_chars(char, int);
@@ -55,23 +55,19 @@ void create_titles(bool, bool, bool);
 std::string hyperlink(std::string str);
 int transform(int);
 
-/* 
- *  -l links the table to the titles
- *  -p adds a prefix to the hyperlink of the titles
- *  -i includes the table to the markdown file
- *  -line string_size include the line in which the title is in
- *  -t tab_size
- */
-
-
 int main(int argc, char* argv []){
-
 	
 	// Validate commands
 	for(int cmd = 1; cmd < argc; cmd++){
 #ifdef DEBUG
 		std::cout << "argument " << cmd << "- " << argv[cmd] << std::endl;
 #endif
+		if(!std::strcmp(argv[cmd], "-o")) commands.insert({"-o",""});
+		else
+		if(!std::strcmp(argv[cmd], "-f")) commands.insert({"-f",""});
+		else
+		if(!std::strcmp(argv[cmd], "-v")) commands.insert({"-v",""});
+		else
 		if(!std::strcmp(argv[cmd], "-l")) commands.insert({"-l",""});
 		else
 		if(!std::strcmp(argv[cmd], "-i")) commands.insert({"-i",""});
@@ -105,9 +101,20 @@ int main(int argc, char* argv []){
 
 	tab = repeat_chars(' ', tab_size);
 
+	if(commands.count("-v")){
+		std::cout << "Activated commands: ";
+		for(auto& command:commands)
+			std::cout << command.first << ' ';
+		std::cout << std::endl;
+	}
+
 #ifdef DEBUG
-	std::cout << "Path: " << markdown_path << std::endl;
+	if(!commands.count("-v"))
+		std::cout << "Path of chosen file: " << markdown_path << std::endl;
 #endif
+	if(commands.count("-v"))
+		std::cout << "Path of chosen file: " << markdown_path << std::endl;
+
 
 	// Valite path was passed
 	if(markdown_path.empty()){
@@ -142,21 +149,24 @@ int main(int argc, char* argv []){
 	}
 	input_markdown_file.close();
 
-	if(input_markdown_lines[0] == "# Table of Contents"){
+	if(input_markdown_lines[0] == "# Table of Contents" && !commands.count("-f")){
 		std::cout << "Table of contents has already been created" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
 #ifdef DEBUG
-	print_titles();
+	if(!commands.count("-v"))
+		print_titles();
 #endif
+	if(commands.count("-v"))
+		print_titles();
 
 	// Create formated titles	
 	create_titles(commands.count("-l"), commands.count("-i"), commands.count("-line"));
 
 	// Create index file
 	std::ofstream markdown_table_of_contents;
-	markdown_table_of_contents.open(markdown_path.substr(0,markdown_path.size()-3) + "_TOC.md");
+	markdown_table_of_contents.open((commands.count("-o")?markdown_path:markdown_path.substr(0,markdown_path.size()-3) + "_TOC.md"));
 
 	markdown_table_of_contents << "# Table of Contents" << std::endl;
 

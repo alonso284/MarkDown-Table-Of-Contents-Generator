@@ -1,7 +1,7 @@
 # Table of Contents
 1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 6
 2. [Description](#description) at line 10
-    1. [TODO](#todo) at line 27
+    1. [TODO](#todo) at line 36
 
 # MarkDown-Table-Of-Contents-Generator
 
@@ -22,7 +22,16 @@ Includes the line at which the title is located
 Adds linking to the file, this only works for github markdowns
 
 `-p prefix`
-In case `-l` is activated, it adds a `prefix` to the link
+In case `-l` is activated, it adds a `prefix` to the link. Default is `#`
+
+`-v`
+Make creation verbose
+
+`-o`
+Overwrite main fail instead of creating new one
+
+`-f`
+Force creation of table even if it already exists
 
 ## TODO
 - Allow user to add a brief description to a header in the table of contents
