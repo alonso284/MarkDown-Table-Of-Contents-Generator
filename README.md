@@ -35,6 +35,4 @@ Force creation of table even if it already exists
 
 ## TODO
 - Allow user to add a brief description to a header in the table of contents
-- Write manual
-- Allow overwrite
-- Include after first title
+- Find a way to overwrite table of content
