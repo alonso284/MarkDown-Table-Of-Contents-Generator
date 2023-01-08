@@ -1,7 +1,7 @@
 # Table of Contents
-1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator-1) at line 6
-2. [Description](#description-1) at line 10
-    1. [TODO](#todo-1) at line 27
+1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 6
+2. [Description](#description) at line 10
+    1. [TODO](#todo) at line 27
 
 # MarkDown-Table-Of-Contents-Generator
 
