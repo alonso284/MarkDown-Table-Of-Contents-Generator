@@ -56,3 +56,5 @@ Force creation of table even if it already exists
 ## TODO
 - Allow user to add a brief description to a header in the table of contents
 - Find a way to overwrite table of content
+- Do not add as title if it is inside code 
+- Print messages in clog
