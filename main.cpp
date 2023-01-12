@@ -7,7 +7,7 @@
 #include <cmath>
 #include <set>
 
-#define DEBUG
+/* #define DEBUG */
 
 struct title{
 	std::string name;
@@ -45,7 +45,7 @@ std::map< std::string, int > title_count;
 
 void print_titles(){
 	for(auto& title:titles)
-		std::cout << "index level " << title.tab_size << ' ' << title.name << " at line " << title.location << std::endl;
+		std::clog << "index level " << title.tab_size << ' ' << title.name << " at line " << title.location << std::endl;
 }
 
 std::string repeat_chars(char, int);
@@ -60,7 +60,7 @@ int main(int argc, char* argv []){
 	// Validate commands
 	for(int cmd = 1; cmd < argc; cmd++){
 #ifdef DEBUG
-		std::cout << "argument " << cmd << "- " << argv[cmd] << std::endl;
+		std::clog << "argument " << cmd << "- " << argv[cmd] << std::endl;
 #endif
 		if(!std::strcmp(argv[cmd], "-o")) commands.insert({"-o",""});
 		else
@@ -79,13 +79,13 @@ int main(int argc, char* argv []){
 		if(!std::strcmp(argv[cmd], "-t")){
 			cmd++;
 			if(cmd >= argc){
-				std::cout << "No argument passed for -t" << std::endl;
+				std::clog << "No argument passed for -t" << std::endl;
 				exit(EXIT_FAILURE);
 			}
 			int indx = 0;
 			while(argv[cmd][indx])
 				if(!isdigit(argv[cmd][indx++])){
-					std::cout << "argument passed for -t is not a number" << std::endl;
+					std::clog << "argument passed for -t is not a number" << std::endl;
 					exit(EXIT_FAILURE);
 				}
 			tab_size = std::stoi(argv[cmd]);
@@ -102,30 +102,30 @@ int main(int argc, char* argv []){
 	tab = repeat_chars(' ', tab_size);
 
 	if(commands.count("-v")){
-		std::cout << "Activated commands: ";
+		std::clog << "Activated commands: ";
 		for(auto& command:commands)
-			std::cout << command.first << ' ';
-		std::cout << std::endl;
+			std::clog << command.first << ' ';
+		std::clog << std::endl;
 	}
 
 #ifdef DEBUG
 	if(!commands.count("-v"))
-		std::cout << "Path of chosen file: " << markdown_path << std::endl;
+		std::clog << "Path of chosen file: " << markdown_path << std::endl;
 #endif
 	if(commands.count("-v"))
-		std::cout << "Path of chosen file: " << markdown_path << std::endl;
+		std::clog << "Path of chosen file: " << markdown_path << std::endl;
 
 
 	// Valite path was passed
 	if(markdown_path.empty()){
-		std::cout << "No file path was provided" << std::endl;
+		std::clog << "No file path was provided" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
 	// Open Markdown
 	input_markdown_file.open(markdown_path);
 	if(!input_markdown_file){
-		std::cout << "Failed to open file with name " << markdown_path << std::endl;
+		std::clog << "Failed to open file with name " << markdown_path << std::endl;
 		std::exit(EXIT_FAILURE);
 	}
 
@@ -138,8 +138,12 @@ int main(int argc, char* argv []){
 	 * 1. The first # should be before four spaces or one tab
 	 * 2. All #'s should be together
 	 */	
+		static bool insideCode = false;
+
+		if(line.size() >= 3 && line.substr(0, 3) == "```") insideCode  = !insideCode;
+
 		input_markdown_lines.push_back(line);
-		if(!line.empty() && line[0] == '#'){
+		if(!insideCode && !line.empty() && line[0] == '#'){
 			int hash_count = 0;
 			while(hash_count < line.size() && line[hash_count] == '#') hash_count++;
 			titles.push_back(title(line.substr(hash_count+1), hash_count, input_markdown_lines.size())); 
@@ -148,7 +152,7 @@ int main(int argc, char* argv []){
 	input_markdown_file.close();
 
 	if(input_markdown_lines[0] == "# Table of Contents" && !commands.count("-f")){
-		std::cout << "Table of contents has already been created" << std::endl;
+		std::clog << "Table of contents has already been created" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
@@ -170,12 +174,14 @@ int main(int argc, char* argv []){
 
 	for(auto& title:generated_titles)
 		markdown_table_of_contents << title << std::endl;
+	markdown_table_of_contents << std::endl << "&#x200B;" << std::endl;
 
 	if(commands.count("-i")){
-		markdown_table_of_contents << std::endl;
-
-		for(auto& line:input_markdown_lines)
-			markdown_table_of_contents << line << std::endl;
+		bool passed_toc_mark = !(input_markdown_lines[0] == "# Table of Contents");
+		for(auto& line:input_markdown_lines){
+			if(passed_toc_mark) markdown_table_of_contents << line << std::endl;
+			if(line == "&#x200B;") passed_toc_mark = true;
+		}
 	}
 
 	markdown_table_of_contents.close();
@@ -210,7 +216,7 @@ void create_titles(bool include_hyperlink, bool include_in_file, bool include_li
 
 	if(include_line_number)
 		for(int indx = 0; indx < generated_titles.size(); indx++)
-			generated_titles[indx] += " at line "  + std::to_string(titles[indx].location+(include_in_file?titles.size()+2:0));;
+			generated_titles[indx] += " at line "  + std::to_string(titles[indx].location+(include_in_file?titles.size()+3:0));;
 }
 
 std::string hyperlink(std::string str){

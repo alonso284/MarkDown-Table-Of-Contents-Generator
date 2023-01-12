@@ -1,9 +1,11 @@
 # Table of Contents
-1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 7
-2. [Installation](#installation) at line 11
-3. [Description](#description) at line 30
-    1. [TODO](#todo) at line 56
+1. [Table of Contents](#table-of-contents) at line 9
+2. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 18
+3. [Installation](#installation) at line 22
+4. [Description](#description) at line 41
+5. [TODO](#todo) at line 67
 
+&#x200B;
 # MarkDown-Table-Of-Contents-Generator
 
 This application is made to automate the creation of table of contents for markdown files, it adds other functinoalities for github markdowns. It only works for mac.
@@ -53,8 +55,6 @@ Overwrite main fail instead of creating new one
 `-f`
 Force creation of table even if it already exists
 
-## TODO
+# TODO
 - Allow user to add a brief description to a header in the table of contents
 - Find a way to overwrite table of content
-- Do not add as title if it is inside code 
-- Print messages in clog
