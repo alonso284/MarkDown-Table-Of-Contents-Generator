@@ -42,6 +42,8 @@ std::string tab;
 std::string prefix("#");
 // set of alreaedy created titles
 std::map< std::string, int > title_count;
+// first line with content
+int first_line = 0;
 
 void print_titles(){
 	for(auto& title:titles)
@@ -144,6 +146,7 @@ int main(int argc, char* argv []){
 
 		input_markdown_lines.push_back(line);
 		if(!insideCode && !line.empty() && line[0] == '#'){
+			if(line == "# Table of Contents") continue;
 			int hash_count = 0;
 			while(hash_count < line.size() && line[hash_count] == '#') hash_count++;
 			titles.push_back(title(line.substr(hash_count+1), hash_count, input_markdown_lines.size())); 
@@ -151,9 +154,12 @@ int main(int argc, char* argv []){
 	}
 	input_markdown_file.close();
 
-	if(input_markdown_lines[0] == "# Table of Contents" && !commands.count("-f")){
-		std::clog << "Table of contents has already been created" << std::endl;
-		exit(EXIT_FAILURE);
+	if(input_markdown_lines[0] == "# Table of Contents"){
+		if(!commands.count("-f")){
+			std::clog << "Table of contents has already been created" << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		while(first_line < input_markdown_lines.size() && input_markdown_lines[first_line++] != "&#x200B;");
 	}
 
 #ifdef DEBUG
@@ -216,7 +222,7 @@ void create_titles(bool include_hyperlink, bool include_in_file, bool include_li
 
 	if(include_line_number)
 		for(int indx = 0; indx < generated_titles.size(); indx++)
-			generated_titles[indx] += " at line "  + std::to_string(titles[indx].location+(include_in_file?titles.size()+3:0));;
+			generated_titles[indx] += " at line "  + std::to_string(titles[indx].location+(include_in_file?titles.size()+3-first_line:0));
 }
 
 std::string hyperlink(std::string str){

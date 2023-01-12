@@ -1,9 +1,8 @@
 # Table of Contents
-1. [Table of Contents](#table-of-contents) at line 9
-2. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 18
-3. [Installation](#installation) at line 22
-4. [Description](#description) at line 41
-5. [TODO](#todo) at line 67
+1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 8
+2. [Installation](#installation) at line 12
+3. [Description](#description) at line 31
+4. [TODO](#todo) at line 57
 
 &#x200B;
 # MarkDown-Table-Of-Contents-Generator
