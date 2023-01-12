@@ -1,8 +1,10 @@
 # Table of Contents
-1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 8
-2. [Installation](#installation) at line 12
-3. [Description](#description) at line 31
-4. [TODO](#todo) at line 57
+1. [MarkDown-Table-Of-Contents-Generator](#markdown-table-of-contents-generator) at line 10
+2. [Installation](#installation) at line 14
+    1. [Executable](#executable) at line 16
+    2. [Man Page](#man-page) at line 35
+3. [Description](#description) at line 39
+4. [TODO](#todo) at line 65
 
 &#x200B;
 # MarkDown-Table-Of-Contents-Generator
@@ -10,6 +12,8 @@
 This application is made to automate the creation of table of contents for markdown files, it adds other functinoalities for github markdowns. It only works for mac.
 
 # Installation
+
+## Executable
 
 Download the executable `mdtc` and store it wherever you want. I recommend storing it at `/usr/bin/`
 
@@ -27,6 +31,10 @@ Then restart the terminal or run:
 ```zsh
 source ~/.zshrc
 ```
+
+## Man Page
+
+Move `mdtc.1` to `/usr/local/share/man/man1` or create a link to it using `ln mdtc.1  /usr/local/share/man/man1/mdtc.1`.
 
 # Description
 
@@ -56,4 +64,3 @@ Force creation of table even if it already exists
 
 # TODO
 - Allow user to add a brief description to a header in the table of contents
-- Find a way to overwrite table of content

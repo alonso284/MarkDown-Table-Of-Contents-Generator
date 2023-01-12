@@ -1,0 +1,46 @@
+.\" Copyright (c) 2023, Alonso Huerta <alonso12_284@outlook.com>
+
+.TH MDTC 1 2023-01-23 "Linux" "User Commands"
+.SH NAME
+mdtc - creation of table of contents for markdown files
+.SH SYNOPSIS
+.nf
+.B mdtc [\fIfile_path\fP] \fIkeys\fP
+.fi
+.SH DESCRIPTION
+The
+.B mdtc
+This application is made to automate the creation of
+table of contents for markdown files, it adds other functinoalities
+for github markdowns. It only works for mac.
+.RE
+
+.SH OPTIONS
+
+.TP
+.BR \-t\ \fItab_size\fP
+Specifies the tab size for the title indexing, the default is 4.
+.TP
+.BR \-i
+Includes the markdown file inside the table of contents generated.
+.TP
+.BR \-line
+Includes the line at which the title is located.
+.TP
+.BR \-l
+Adds linking to the file, this only works for github markdowns.
+.TP
+.BR \-p\ \fIprefix\fP
+In case -l is activated, it adds a 
+.BR prefix 
+to the link. Default is 
+.BR #
+.TP
+.BR \-v
+Make creation verbose.
+.TP
+.BR \-o
+Overwrite main fail instead of creating new one.
+.TP
+.BR \-f
+Force creation of table even if it already exists.
