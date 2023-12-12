@@ -64,3 +64,4 @@ Force creation of table even if it already exists
 
 # TODO
 - Allow user to add a brief description to a header in the table of contents
+- rewrite with correct use of files for cpp
